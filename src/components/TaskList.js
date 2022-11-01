@@ -1,6 +1,5 @@
 import { CopyOutlined, DeleteOutlined } from "@ant-design/icons";
 import React from "react";
-import Tree from "react-animated-tree";
 
 const TaskList = ({
   taskList,
@@ -9,7 +8,7 @@ const TaskList = ({
   deleteData,
   copyItem,
 }) => {
-  console.log("taskList", taskList);
+  // console.log("taskList", taskList);
   var Duplica = taskList.map((x) => x.id);
   {
     // console.log(Duplica);
@@ -31,10 +30,10 @@ const TaskList = ({
       <div className="row">
         <div style={{ backgroundColor: "whitesmoke" }}>
           {taskList.map((task) => {
-            // console.log("pareentId", task.parentId);
+            // console.log("taskList 2", taskList);
             return (
               <div className="form-check" key={task.id}>
-                {!intersection.length > 0 && (
+                {/* {!intersection.length > 0 && ( */}
                   <>
                     <ul>
                       <li>
@@ -96,9 +95,9 @@ const TaskList = ({
                       </li>
                     </ul>
                   </>
-                )}
+                {/* )} */}
 
-                {intersection?.length > 0 && (
+                {/* {intersection?.length > 0 && (
                   <ul>
                     <li>
                       <>
@@ -122,7 +121,7 @@ const TaskList = ({
                             onClick={(e) => copyItem(e, task.id)}
                           >
                             <CopyOutlined />
-                          </span>
+                          </span> */}
                           {/* <button
                             className="btn btn-primary"
                             style={{ margin: 10 }}
@@ -140,7 +139,7 @@ const TaskList = ({
                             <DeleteOutlined />
                           </span> */}
 
-                          <button
+                          {/* <button
                             onClick={() => {
                               deleteData(task.id);
                             }}
@@ -149,12 +148,12 @@ const TaskList = ({
                             className="btn-sm btn-danger"
                           >
                             Delete
-                          </button>
-                        </label>
+                          </button> */}
+                        {/* </label>
                       </>
                     </li>
                   </ul>
-                )}
+                )} */}
               </div>
             );
           })}

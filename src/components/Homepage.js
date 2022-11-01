@@ -25,7 +25,6 @@ const Homepage = () => {
     setPendingTaskList(pendingTasks);
     const completedTasks = taskList.filter((task) => task.isPending === false);
     setCompletedTaskList(completedTasks);
-    // console.log("Completed Task List", completedTasks);
   }, [taskList]);
 
   let itemEvent = (e) => {
@@ -37,43 +36,65 @@ const Homepage = () => {
   };
 
   // Input Task Data And save
-  const initialState = [
-    {
-      categories: {
-        0: {
-          id: "0",
-          value: "Category",
-          parentId: null,
-          children: [],
-        },
-      },
-    },
-  ];
+  // const initialState = {
+  //   categories: {
+  //     0: {
+  //       id: "0",
+  //       value: "Category",
+  //       parentId: null,
+  //       children: [],
+  //     },
+  //   },
+  // };
+
   const listOfTask = () => {
     if (taskInput) {
+      let  parentId = selectTask.toString()
       const newState = setTaskList([
         ...taskList,
         {
           id: uniqid(),
           isPending: true,
-          parentId: selectTask.toString(),
+          parentId,
           value: taskInput,
           date: new Date().toLocaleString(),
-          children: [],
+          children: [
+         
+            taskList
+        
+          ],
         },
       ]);
-      if (parentId) {
-        newState[parentId] = {
-          ...taskList.categories[parentId],
-          children: [id, ...taskList[parentId].children],
-        };
-        setTaskInput("");
+
+      function findById(taskList, id, nestingKey) {
+        // console.log("arr", taskList);
+        // console.log("id", id);
+        if (taskList.length == 0) return;
+        // console.log("in looop");
+        return (
+          taskList.find((d) => d.id === id) ||
+          findById(
+            taskList.flatMap((d) => d[nestingKey] || []),
+            id
+          ) ||
+          undefined
+        );
       }
+      let todo = findById(taskList);
+      // console.log("todo", todo);
+
+      // let item = taskList.find((data) => data.id == parentId);
+      // // console.log("item", item);
+      // let index = taskList.indexOf(item);
+      // // console.log("index", index);
+      // taskList[index].children = [...taskList[index].children];
     } else {
       alert("Enter the task");
     }
+    setTaskInput("");
   };
-  console.log("taskList", taskList);
+
+  // console.log("taskList", taskList);
 
   const handleCheckboxTask = (e, id) => {
     if (e.target.checked) {
