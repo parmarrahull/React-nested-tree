@@ -2,6 +2,8 @@ import { CaretDownOutlined, CaretUpOutlined } from "@ant-design/icons";
 import React, { useState, useEffect } from "react";
 import uniqid from "uniqid";
 import TaskList from "./TaskList";
+import "antd/dist/antd.css";
+import { Select } from "antd";
 
 const Homepage = () => {
   const [taskInput, setTaskInput] = useState("");
@@ -9,10 +11,10 @@ const Homepage = () => {
   const [pendingTaskList, setPendingTaskList] = useState([]);
   const [completedTaskList, setCompletedTaskList] = useState([]);
   const [showPending, setShowPending] = useState(true);
-  const [selectTask, setSelectTask] = useState(0);
+  const [selectTask, setSelectTask] = useState("");
   const [isActive, setIsActive] = useState(false);
 
-  console.log("TaskList", taskList);
+  console.log("selectTask", selectTask);
 
   const handleClick = () => {
     //  toggle isActive state on click
@@ -36,65 +38,24 @@ const Homepage = () => {
   };
 
   // Input Task Data And save
-  // const initialState = {
-  //   categories: {
-  //     0: {
-  //       id: "0",
-  //       value: "Category",
-  //       parentId: null,
-  //       children: [],
-  //     },
-  //   },
-  // };
-
-  const listOfTask = () => {
+  const listOfTask = (e) => {
+    e.preventDefault();
     if (taskInput) {
-      let  parentId = selectTask.toString()
-      const newState = setTaskList([
+      setTaskList([
         ...taskList,
         {
           id: uniqid(),
           isPending: true,
-          parentId,
           value: taskInput,
           date: new Date().toLocaleString(),
-          children: [
-         
-            taskList
-        
-          ],
+          category: selectTask || "global___array",
         },
       ]);
-
-      function findById(taskList, id, nestingKey) {
-        // console.log("arr", taskList);
-        // console.log("id", id);
-        if (taskList.length == 0) return;
-        // console.log("in looop");
-        return (
-          taskList.find((d) => d.id === id) ||
-          findById(
-            taskList.flatMap((d) => d[nestingKey] || []),
-            id
-          ) ||
-          undefined
-        );
-      }
-      let todo = findById(taskList);
-      // console.log("todo", todo);
-
-      // let item = taskList.find((data) => data.id == parentId);
-      // // console.log("item", item);
-      // let index = taskList.indexOf(item);
-      // // console.log("index", index);
-      // taskList[index].children = [...taskList[index].children];
+      setTaskInput("");
     } else {
       alert("Enter the task");
     }
-    setTaskInput("");
   };
-
-  // console.log("taskList", taskList);
 
   const handleCheckboxTask = (e, id) => {
     if (e.target.checked) {
@@ -165,7 +126,6 @@ const Homepage = () => {
           ]);
     }
   };
-
   return (
     <>
       <h1 style={{ textAlign: "center", marginTop: 20 }}>TO Do List</h1>
@@ -175,10 +135,12 @@ const Homepage = () => {
             style={{ backgroundColor: "whitesmoke" }}
             className="col-sm-6 mt-5"
           >
-            <form>
+            <form onSubmit={listOfTask}>
               <div>
+                {/* <label className="m-5">Select Category</label> */}
                 <select id="selecttask" onChange={selectTasks}>
-                  <option value="0">Select Task</option>
+                  <option value="global___array">Select Task</option>
+
                   {taskList.map((data) => (
                     <option key={data.id} value={data.id}>
                       {data.value}
@@ -199,8 +161,8 @@ const Homepage = () => {
               ></input>
               <div style={{ marginTop: 20 }}>
                 <button
-                  onClick={listOfTask}
-                  type="button"
+                  // onClick={listOfTask}
+                  type="Submit"
                   className="btn btn-primary"
                 >
                   Add
